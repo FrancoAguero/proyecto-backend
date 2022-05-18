@@ -6,6 +6,7 @@ import twilio from "twilio";
 import 'dotenv/config';
 import users from "../models/users.js";
 import { createTransport } from 'nodemailer';
+import 'dotenv/config';
 
 
 const selectDao = (db) => {
@@ -23,14 +24,7 @@ const selectDao = (db) => {
 
 const carts = selectDao(process.env.DB) 
 const cartsApiRouter = new Router();
-
-const accountSid = 'ACed03f5b54e816878922d3343f5f4d438';
-const authToken = '41040cf84c17b27afaf2f5fc6fcb298c';
-const twilioNumber = '+19282499824';
-const myNumber = '+543516967535';
-const twilioNumberWhatsapp = '+14155238886'
-const myNumberWhatsapp = '+5493516967535';
-const client = twilio(accountSid, authToken);
+const client = twilio(process.env.accountSid, process.env.authToken);
 const transporter = createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
@@ -211,14 +205,14 @@ cartsApiRouter.post('/:idCart/carts', async (req, res) => {
 
                 await client.messages.create({
                     body: ` Nuevo pedido de: \n Cliente: ${user.user} \n Email: ${user.email} \n Productos: ${Cart.products.map(product => product.title)}`,
-                    from: `whatsapp:${twilioNumberWhatsapp}`,
-                    to: `whatsapp:${myNumberWhatsapp}`
+                    from: `whatsapp:${process.env.twilioNumberWhatsapp}`,
+                    to: `whatsapp:${process.env.myNumberWhatsapp}`
                 })
 
                 await client.messages.create({
                     body: 'Su pedido fue recibido y se encuentra en proceso',
-                    from: `${twilioNumber}`,
-                    to: `${myNumber}`
+                    from: `${process.env.twilioNumber}`,
+                    to: `${process.env.myNumber}`
                 })
             }
             else{
