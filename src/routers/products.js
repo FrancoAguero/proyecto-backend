@@ -3,6 +3,7 @@ import productsApiFile from "../daos/products/productsDaoFile.js";
 import productsApiMongo from "../daos/products/productsDaoMongo.js";
 import productosApiFirebase from "../daos/products/productsDaoFirebase.js";
 import 'dotenv/config';
+import logger from "../logger.js";
 
 
 
@@ -71,7 +72,7 @@ productsApiRouter.put('/:id', async (req, res) => {
         try {
             res.json(await products.update({ ...req.body, id: req.params.id }))
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             res.json({
                 err: -1,
                 message: error
@@ -110,7 +111,7 @@ productsApiRouter.delete('/', async (req, res) => {
         try {
             res.json(await products.deleteAll())
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             res.json({
                 err: -1,
                 message: error

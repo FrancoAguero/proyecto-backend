@@ -7,6 +7,7 @@ import 'dotenv/config';
 import users from "../models/users.js";
 import { createTransport } from 'nodemailer';
 import 'dotenv/config';
+import logger from "../logger.js";
 
 
 const selectDao = (db) => {
@@ -221,7 +222,7 @@ cartsApiRouter.post('/:idCart/carts', async (req, res) => {
                 })
             }
         } catch (error) {
-            console.log(error)
+            logger.error(error)
             res.json({
                 err: -1,
                 message: error

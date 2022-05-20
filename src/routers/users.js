@@ -6,6 +6,7 @@ import { Strategy } from "passport-local";
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import { createTransport } from 'nodemailer';
+import logger from "../logger.js";
 
 
 const usersApiRouter = new Router();
@@ -36,13 +37,13 @@ passport.use(new LocalStrategy(
     async (username, password, done)=>{
         const [existeUsuario] = await users.find({user: username})
         if (!existeUsuario) {
-            console.log('Usuario no encontrado')
+            logger.warn('Usuario no encontrado')
             return done(null, false);
         }
         else{
             const result = bcrypt.compareSync(password, existeUsuario.pass);
             if(!result){
-                console.log('Contrase;a invalida')
+                logger.warn('Contrase;a invalida')
                 return done(null, false);
             }
             return done(null, existeUsuario);
