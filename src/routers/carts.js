@@ -124,7 +124,7 @@ cartsApiRouter.post('/:idCart/delete/:idProduct', async (req, res) => {
     else{
         res.json({
             err: -1,
-            message: "ruta no autorizada"
+            message: "ruta no autorizada "
         })
     }
 })
